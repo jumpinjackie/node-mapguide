@@ -12,3 +12,11 @@
 /MgNodeJsApi/node-extension.opensdf
 /MgNodeJsApi/node-extension.sdf
 /MgNodeJsApi/extension/Release
+/Oem/IMake/IMake.vcxproj.user
+/Constants.xml
+/MapGuideApi.i
+/MapGuideApiGen.xml
+/MapGuideApi_Doc.i
+/Oem/IMake/ipch
+/node_modules
+/constants.js
