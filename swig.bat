@@ -1,0 +1,1 @@
+Oem\SWIGEx\Win32\Swig.exe -c++ -nodejs -catchallcode catchall.code -clsidcode getclassid.code -nodefault -lib Oem\SWIGEx\Lib -o MgNodeJsApi\extension\MgApi_wrap.cpp MapGuideApi.i

@@ -17,30 +17,16 @@ Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "node", "%NODE_SRC%\Debug\no
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|Win32 = Debug|Win32
-		Debug|x86 = Debug|x86
-		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|Win32 = Release|Win32
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Debug|Win32.ActiveCfg = Debug|Win32
 		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Debug|Win32.Build.0 = Debug|Win32
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Debug|x86.ActiveCfg = Debug|Win32
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Release|Win32.ActiveCfg = Release|Win32
 		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Release|Win32.Build.0 = Release|Win32
-		{21C39FA3-1465-4C01-B73B-5D2CE4C801AD}.Release|x86.ActiveCfg = Release|Win32
-		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Debug|Mixed Platforms.ActiveCfg = Debug
 		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Debug|Win32.ActiveCfg = Debug
-		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Debug|x86.ActiveCfg = Debug
-		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Release|Mixed Platforms.ActiveCfg = Debug
 		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Release|Win32.ActiveCfg = Debug
-		{6F1431CF-1E30-4279-B378-4F7E1F3A7C85}.Release|x86.ActiveCfg = Debug
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

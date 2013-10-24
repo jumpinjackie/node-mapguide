@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Parameters>
+<!--
+   Module section.
+-->
+<Module name="MapGuideApi" />
+
+<!--
+   Target section.
+-->
+<Target path="./MapGuideApi.i" />
+<DocTarget path="./MapGuideApi_Doc.i" />
+
+<!--
+   C++ inline section.
+-->
+<CppInline>
+#ifdef _WIN32
+#pragma warning(disable: 4251)
+#endif
+
+#include &lt;string&gt;
+#include &lt;map&gt;
+#include "MapGuideCommon.h"
+#include "WebApp.h"
+
+#ifdef _WIN32
+#include "WebSupport.h"
+#else
+#include "InitializeWebTier.cpp"
+#include "UnicodeString.h"
+#endif
+#include "HttpHandlerApiDllExport.h"
+#include "HttpHandler.h"
+
+#if defined(PHP) || defined(JAVA)
+typedef std::wstring STRINGPARAM;
+#else
+typedef wchar_t* STRINGPARAM;
+#endif
+</CppInline>
+
+<!--
+   Type replacements.
+-->
+<TypeReplacements>
+    <TypeReplacement oldtype="CREFSTRING" newtype="STRINGPARAM" />
+    <TypeReplacement oldtype="INT64" newtype="long long" />
+</TypeReplacements>
+
+<!--
+   Swig inline section.
+-->
+<SwigInline>
+  %include "MapGuideApi_Doc.i" //translated doxygen fragments
+  //Modified for node.js
+  //%include "language.i"   //typemaps specific for each language
+  %include "$(MG_SRC)/Common/Foundation/System/FoundationClassId.h"
+  %include "$(MG_SRC)/Common/Geometry/GeometryClassId.h"
+  %include "$(MG_SRC)/Common/PlatformBase/Services/PlatformBaseClassId.h"
+  %include "$(MG_SRC)/Common/MapGuideCommon/System/MapGuideCommonClassId.h"
+  %include "$(MG_SRC)/Web/src/WebApp/WebAppClassId.h"
+  %include "$(MG_SRC)/Web/src/HttpHandler/HttpHandlerClassId.h"
+
+#if defined(PHPSWIG)
+  // We force UTF-8 encoding for PHP
+  typedef char*         STRINGPARAM;
+  typedef char*         STRING;
+  typedef char*         BYTE_ARRAY_IN;
+  typedef char*         BYTE_ARRAY_OUT;
+  typedef unsigned char BYTE;
+#elseif defined(JAVA)
+  typedef std::wstring  STRINGPARAM;
+  typedef signed char   BYTE;  //mapped to byte in Java
+#else // .Net
+  typedef char*         BYTE_ARRAY_IN;
+  typedef char*         BYTE_ARRAY_OUT;
+  typedef unsigned char BYTE;    //mapped to byte in C#
+#endif
+
+  typedef int           STATUS;
+  typedef short         INT8;
+  typedef short         INT16;
+  typedef int           INT32;
+  typedef int           UINT32;
+
+</SwigInline>
+
+<!--
+   C++ Headers section.  If you add headers to this section then you
+   must also add them to Makefile.am in the JavaApi and PhpApi folders.
+-->
+<Headers>
+
+    <!-- Foundation classes -->
+
+    <Header path="$(MG_SRC)/Common/Foundation/System/Object.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/System/Disposable.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/System/GuardDisposable.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/System/Serializable.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/System/NamedSerializable.h" />
+
+    <Header path="$(MG_SRC)/Common/Foundation/Data/Collection.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/Property.h" />
+
+    <!-- The MgDisposableCollection depends on the MgCollection above and so must come after it -->
+    <Header path="$(MG_SRC)/Common/Foundation/System/DisposableCollection.h" />
+
+    <Header path="$(MG_SRC)/Common/Foundation/Data/BatchPropertyCollection.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/ByteReader.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/ByteSink.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/ByteSource.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/DateTime.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/NullableProperty.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/PropertyCollection.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/PropertyDefinition.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/StringCollection.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Data/StringProperty.h" />
+
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/Exception.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/SystemException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/IoException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/FileIoException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/StreamIoException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/OutOfRangeException.h" />
+
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ApplicationException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ArgumentOutOfRangeException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ClassNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ConfigurationException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ConfigurationLoadFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ConfigurationSaveFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DateTimeException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DecryptionException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DirectoryNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DivideByZeroException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DomainException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DuplicateDirectoryException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DuplicateFileException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/DuplicateObjectException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/EncryptionException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/FileNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/IndexOutOfRangeException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/InvalidArgumentException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/InvalidCastException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/InvalidOperationException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/InvalidPropertyTypeException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/InvalidStreamHeaderException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/LengthException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/LogicException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/NotFiniteNumberException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/NotImplementedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/NullArgumentException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/NullPropertyValueException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/NullReferenceException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ObjectNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/OutOfMemoryException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/OverflowException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/PlatformNotSupportedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ResourcesException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ResourcesLoadFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ResourceTagNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/RuntimeException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/TemporaryFileNotAvailableException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/ThirdPartyException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/UnclassifiedException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/UnderflowException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/XmlException.h" />
+    <Header path="$(MG_SRC)/Common/Foundation/Exception/XmlParserException.h" />
+
+    <!-- Geometry classes -->
+
+    <Header path="$(MG_SRC)/Common/Geometry/GeometricEntity.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Geometry.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/GeometryComponent.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Curve.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveSegment.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Ring.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Region.h" />
+
+    <Header path="$(MG_SRC)/Common/Geometry/AgfReaderWriter.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/AggregateGeometry.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/ArcSegment.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Coordinate.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateIterator.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateXY.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateXYM.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateXYZ.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateXYZM.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurvePolygon.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurvePolygonCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveRing.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveRingCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveSegmentCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveString.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CurveStringCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Envelope.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/GeometryCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/GeometryFactory.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/LinearRing.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/LinearRingCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/LinearSegment.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/LineString.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/LineStringCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Measure.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiCurvePolygon.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiCurveString.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiGeometry.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiLineString.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiPoint.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/MultiPolygon.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Point.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/PointCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Polygon.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/PolygonCollection.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Transform.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/WktReaderWriter.h" />
+
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystem.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemDictionaryBase.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemCatalog.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemCategory.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemCategoryDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemDatum.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemDatumDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticTransformDefParams.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticPathElement.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticPath.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticPathDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticTransformDef.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticTransformGridFile.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticAnalyticalTransformDefParams.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticInterpolationTransformDefParams.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticMultipleRegressionTransformDefParams.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticTransformDefDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemDictionaryUtility.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemEllipsoid.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemEllipsoidDictionary.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemEnum.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemEnumInteger32.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemFactory.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemFilter.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemFilterInteger32.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemFormatConverter.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGeodeticTransformation.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemGrids.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemMathComparator.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemMeasure.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemMgrs.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemProjectionInformation.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemTransform.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/CoordinateSystem/CoordinateSystemUnitInformation.h" />
+
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemComputationFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemConversionFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemInitializationFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemLoadFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemMeasureFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/CoordinateSystemTransformFailedException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/GeometryException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/InvalidCoordinateSystemException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/InvalidCoordinateSystemTypeException.h" />
+    <Header path="$(MG_SRC)/Common/Geometry/Exception/InvalidCoordinateSystemUnitsException.h" />
+
+    <!-- PlatformBase classes -->
+
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/BlobProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/BooleanProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/ByteProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/ClobProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/Color.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/DateTimeProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/DoubleProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/Int16Property.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/Int32Property.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/Int64Property.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/IntCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/PropertyDefinitionCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/SingleProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Data/StringPropertyCollection.h" />
+
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ArrayTypeMismatchException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/DuplicateResourceDataException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/DuplicateResourceException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/EmptyFeatureSetException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/FdoException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/FeatureServiceException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidMapDefinitionException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidRepositoryNameException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidRepositoryTypeException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourceDataNameException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourceDataTypeException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourceNameException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourcePathException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourcePreProcessingTypeException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/InvalidResourceTypeException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/LayerNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ResourceBusyException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ResourceDataNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ResourceNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ServiceNotAvailableException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/ServiceNotSupportedException.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Exception/UserNotFoundException.h" />
+
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureCommand.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureQueryOptions.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureSourceParams.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Reader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Service.h" />
+
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/BaseService.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ClassDefinition.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ClassDefinitionCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FileFeatureSourceParams.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/CreateSdfParams.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/DataPropertyDefinition.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/DataReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/DeleteFeatures.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureAggregateOptions.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureCommandCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureSchema.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureSchemaCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/FeatureService.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/GeometricPropertyDefinition.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/GeometryProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/GeometryTypeInfo.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/GwsFeatureReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/InsertFeatures.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/LongTransactionReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ObjectPropertyDefinition.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Parameter.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ParameterCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Raster.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/RasterProperty.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/RasterPropertyDefinition.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Resource.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ResourceIdentifier.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/ResourceService.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/SpatialContextReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/SqlDataReader.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Transaction.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/UpdateFeatures.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/Services/Warnings.h" />
+
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/LayerBase.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/LayerCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/LayerGroup.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/LayerGroupCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/MapBase.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/MapCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/ReadOnlyLayerCollection.h" />
+    <Header path="$(MG_SRC)/Common/PlatformBase/MapLayer/SelectionBase.h" />
+
+    <!-- MapGuideCommon classes -->
+
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/AuthenticationFailedException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/ConnectionFailedException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/ConnectionNotOpenException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DbException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DbXmlException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateGroupException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateNameException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateParameterException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateRepositoryException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateRoleException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateServerException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateSessionException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DuplicateUserException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DwfException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DwfSectionNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/DwfSectionResourceNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/EndOfStreamException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/GroupNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidDwfPackageException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidDwfSectionException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidFeatureSourceException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidIpAddressException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidLicenseException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidLogEntryException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidPasswordException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidPrintLayoutFontSizeUnitsException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidPrintLayoutPositionUnitsException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidPrintLayoutSizeUnitsException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/InvalidServerNameException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/LicenseException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/LicenseExpiredException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/OperationProcessingException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/ParameterNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/PathTooLongException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/PortNotAvailableException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/PrintToScaleModeNotSelectedException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/RepositoryCreationFailedException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/RepositoryNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/RepositoryNotOpenException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/RepositoryOpenFailedException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/RoleNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/ServerNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/ServerNotOnlineException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/SessionExpiredException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/SessionNotFoundException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/UnauthorizedAccessException.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Exception/UriFormatException.h" />
+
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/DrawingService.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/DwfVersion.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/FeatureInformation.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/KmlService.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/Layout.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/MappingService.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/MapPlot.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/MapPlotCollection.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/PackageStatusInformation.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/PlotSpecification.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/ProfilingService.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/RenderingOptions.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/RenderingService.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/ServerAdmin.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/Site.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/SiteConnection.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/SiteInfo.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/Services/TileService.h" />
+
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/System/UserInformation.h" />
+
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/MapLayer/Layer.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/MapLayer/Map.h" />
+    <Header path="$(MG_SRC)/Common/MapGuideCommon/MapLayer/Selection.h" />
+
+    <!-- WebApp classes -->
+
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebUiTargetCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebWidget.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebWidgetCollection.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebUiPane.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebUiSizablePane.h" />
+
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebBufferCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebCommandCollection.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebCommandWidget.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebContextMenu.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebFlyoutWidget.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebGetPrintablePageCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebHelpCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebInformationPane.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebInvokeScriptCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebInvokeUrlCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebLayout.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebMeasureCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebPrintCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebSearchCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebSelectWithinCommand.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebSeparatorWidget.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebTaskBar.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebTaskBarWidget.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebTaskPane.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebToolbar.h" />
+    <Header path="$(MG_SRC)/Web/src/WebApp/WebViewOptionsCommand.h" />
+
+    <!-- HttpHandler classes -->
+
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpHeader.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpPrimitiveValue.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpRequest.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpRequestMetadata.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpRequestParam.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpResponse.h" />
+    <Header path="$(MG_SRC)/Web/src/HttpHandler/HttpResult.h" />
+
+</Headers>
+
+</Parameters>

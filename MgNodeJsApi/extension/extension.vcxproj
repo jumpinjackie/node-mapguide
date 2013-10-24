@@ -90,7 +90,7 @@
       <NoEntryPoint>true</NoEntryPoint>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
-      <AdditionalLibraryDirectories>D:\mg-sandbox-vc10\MgDev\Common\lib\release;D:\mg-sandbox-vc10\MgDev\Web\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MG_SRC)\Common\lib\release;$(MG_SRC)\Web\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
