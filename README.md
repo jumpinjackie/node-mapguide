@@ -25,7 +25,7 @@ Build Instructions (Windows)
 ----------------------------
 
  1. Build MapGuide Open Source
- 2. Build node.js from source. If you have multiple versions of Visual Studio, make sure node's build script uses the VS2012 compiler. MapGuide does not expose a C-linkable API thus node.js must be built with the same compiler used to build MapGuide.
+ 2. Build node.js from source. If you have multiple versions of Visual Studio, make sure node's build script uses the VS2012 compiler. MapGuide does not export a C-linkable API (and neither does node/V8) thus node.js must be built with the same compiler used to build MapGuide.
  3. Install Jake locally: `npm install jake`
  4. Install ini module: `npm install ini`
  5. Build node-mapguide with jake from VS2012 command prompt
