@@ -1533,7 +1533,7 @@ void processHeaderFile(string header)
                 fprintf(outfile, "public ");
 
             if (translateMode && language == javascript)
-                fprintf(outfile, "OSGeo.MapGuide.%s = ", className.c_str());
+                fprintf(outfile, "exports.%s = ", className.c_str());
             else
                 fprintf(outfile, "class %s", className.c_str());
 
@@ -1699,11 +1699,6 @@ void createNativeFile()
             if (docOutFile == NULL)
                 error(string("Cannot create file ") + docTarget);
         }
-    }
-
-    if(language == javascript)
-    {
-        fprintf(outfile, "if (typeof(OSGeo) == 'undefined') OSGeo = {};\nif (typeof(OSGeo.MapGuide) == 'undefined') OSGeo.MapGuide = {};\n");
     }
 
     if(language == php)

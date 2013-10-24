@@ -45,12 +45,18 @@ Using the extension in Node.js
 
 ```javascript
 var mg = require("./MapGuideNodeJsApi");
+var constants = require("./mgconstants");
 mg.MgInitializeWebTier("C:\path\to\webconfig.ini");
 
 //All MapGuide classes are prefixed under the alias you've required() under
 var conn = new mg.MgSiteConnection();
 var user = new mg.MgUserInformation("Anonymous", "");
 conn.Open(user);
+
+//Where certain known constants are expected, use the mgconstants module
+var resSvc = conn.CreateService(constants.MgServiceType.ResourceService);
+var featSvc = conn.CreateService(constants.MgServiceType.FeatureService);
+
 ```
 
 TODO

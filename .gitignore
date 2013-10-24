@@ -20,3 +20,5 @@
 /Oem/IMake/ipch
 /node_modules
 /constants.js
+/mgconstants.js
+/Oem/IMake/IMake.opensdf

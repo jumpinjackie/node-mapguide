@@ -84,7 +84,7 @@ task('constants', ['imake'],  function() {
             console.log('[constants]: Running IMake');
             var dir = process.cwd();
             var exe = path.join(dir, 'Oem/IMake/Win32/IMake.exe');
-            exec(exe + ' Constants.xml JavaScript constants.js', function(error, stdout, stderr) {
+            exec(exe + ' Constants.xml JavaScript mgconstants.js', function(error, stdout, stderr) {
                 if (error !== null) {
                     console.error('[constants]: exec error: ' + error);
                     fail();
